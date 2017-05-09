@@ -1,15 +1,46 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Programming assignment 2 for R programming course. 
+## This assignment demonstrates how to cache the results of 
+## time consuming computations using scoping rules of the R
+## language. 
 
-## Write a short comment describing this function
+## Create a special 'matrix' which is really a list containing functions to
+## 1. set the value of the matrix
+## 2. get the value of the matrix
+## 3. set the value of the inverse of the matrix
+## 4. get the value of the inverse of the matrix
 
 makeCacheMatrix <- function(x = matrix()) {
-
+    i <- NULL
+    set <- function(y) {
+        x <<- y
+        i <<- NULL
+    }
+    get <- function()
+        x
+    setinverse <- function(inverse)
+        i <<- inverse
+    getinverse <- function()
+        i
+    list(
+        set = set,
+        get = get,
+        setinverse = setinverse,
+        getinverse = getinverse
+    )
 }
 
 
-## Write a short comment describing this function
+## Return a matrix that is the inverse of x, using the caching 
+## methods defined in the function just above, makeCacheMatrix. 
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    i <- x$getinverse()
+    if(!is.null(i)) {
+        message("getting cached data")
+        return(i)
+    }
+    data <- x$get()
+    i <- solve(data, ...)
+    x$setinverse(i)
+    i
 }
